@@ -6,10 +6,6 @@
         "Effect": "Allow",
         "Action": [
           "autoscaling:DescribeAutoScalingGroups",
-          "ce:GetReservationUtilization",
-          "ce:GetSavingsPlansCoverage",
-          "ce:GetSavingsPlansUtilization",
-          "ce:GetSavingsPlansUtilizationDetails",
           "cloudwatch:GetMetricData",
           "cloudwatch:GetMetricStatistics",
           "cloudwatch:ListMetrics",
@@ -40,12 +36,8 @@
           "rds:DescribeDBParameters",
           "rds:DescribeOrderableDBInstanceOptions",
           "rds:ListTagsForResource",
-          "s3:GetBucketAcl",
-          "s3:GetObject",
-          "savingsplans:DescribeSavingsPlans",
           "servicecatalog:DescribeProduct",
           "servicecatalog:SearchProducts",
-          "sts:AssumeRole",
           "sts:AssumeRoleWithWebIdentity"
         ],
         "Resource": "*"
