@@ -45,6 +45,7 @@
           "elasticloadbalancing:DescribeTargetGroups",
           "elasticloadbalancing:DescribeTargetHealth",
           "iam:PassRole",
+          "iam:GetUser",
           "KMS:CreateGrant",
           "organizations:DescribeOrganization",
           "organizations:ListAccounts",
