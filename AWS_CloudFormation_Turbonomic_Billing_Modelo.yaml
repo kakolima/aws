@@ -1,0 +1,34 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "VisualEditor0",
+        "Effect": "Allow",
+        "Action": [
+          "ce:GetReservationUtilization",
+          "ce:GetSavingsPlansCoverage",
+          "ce:GetSavingsPlansUtilization",
+          "ce:GetSavingsPlansUtilizationDetails",
+          "iam:GetUser",
+          "organizations:DescribeOrganization",
+          "organizations:ListAccounts",
+          "pricing:DescribeServices",
+          "pricing:GetAttributeValues",
+          "savingsplans:DescribeSavingsPlans"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "VisualEditor1",
+        "Effect": "Allow",
+        "Action": [
+            "s3:GetObject",
+            "s3:GetBucketAcl"
+        ],
+        "Resource": [
+            "arn:aws:s3:::turbonomic.NOME-DO-CLIENTE.reports",
+            "arn:aws:s3:::turbonomic.NOME-DO-CLIENTE.reports/*"
+        ]
+      }
+    ]
+  }
