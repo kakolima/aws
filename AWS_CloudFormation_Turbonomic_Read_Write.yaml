@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Cria o stack que implelenta a IAM Role necessaria para gerenciar
+  recursos da AWS pelo Turbonomic. Este template cria acesso SOMENTE LEITURA apenas.
+  Atualizado em 05-2023
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: Turbonomic
+        Parameters:
+          - TurboRoleName
+    ParameterLabels:
+      TurboRoleName:
+        default: Turbonomic IAM Role Name
+Parameters:
+  TurboRoleName:
+    Description: Nome do Turbonomic IAM Role que vai ser criado nas Accounts AWS. 
+      Use somente caracteres alfanumericos e/ou +=,.@_-
+    Type: String
+    Default: 'Turbonomic_Cross_Account_Access'
+Resources:
+  TurbonomicIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${TurboRoleName}
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: "arn:aws:iam:: <YOUR_ACCOUNT_NUMBER>:oidc-provider/rh-oidc.s3.us-east-1.amazonaws.com/ID-FORNECIDO-PELA-IBM"
+            Action: "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "rh-oidc.s3.us-east-1.amazonaws.com/ID-FORNECIDO-PELA-IBM:sub": "system:serviceaccount:<tenant_id>:<tenant_svc_account>"
+  TurbonomicCrossAccountPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: TurbonomicRecommendedMinimumPolicy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - autoscaling:DescribeAutoScalingGroups
+              - cloudwatch:GetMetricData
+              - cloudwatch:GetMetricStatistics
+              - cloudwatch:ListMetrics
+              - ec2:DescribeSpotInstanceRequests
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeInstances
+              - ec2:DescribeImages
+              - ec2:DescribeVolumes
+              - ec2:DescribeVolumeStatus
+              - ec2:DescribeVolumesModifications
+              - ec2:DescribeAddresses
+              - ec2:DescribeRegions
+              - ec2:DescribeReservedInstances
+              - ec2:DescribeReservedInstancesModifications
+              - ec2:DescribeSpotPriceHistory
+              - ec2:DescribeAccountAttributes
+              - ec2:ListTagsForResource
+              - elasticloadbalancing:DescribeTargetGroups
+              - elasticloadbalancing:DescribeTargetHealth
+              - elasticloadbalancing:DescribeLoadBalancers
+              - elasticloadbalancing:DescribeInstanceHealth
+              - iam:GetUser
+              - organizations:DescribeOrganization
+              - organizations:ListAccounts
+              - pi:GetResourceMetrics
+              - rds:DescribeDBInstances
+              - rds:DescribeDBClusters
+              - rds:DescribeDBParameters
+              - rds:ListTagsForResource
+              - rds:DescribeOrderableDBInstanceOptions
+              - servicecatalog:SearchProducts
+              - savingsplans:DescribeSavingsPlans
+            Effect: Allow
+            Resource: '*'
+      Roles: [!Ref TurbonomicIAMRole]
+Outputs:
+  RoleArn:
+    Description: O ARN da Role do Turbonomic
+    Value: !GetAtt [TurbonomicIAMRole, Arn]
+  RoleName:
+    Description: O nome da IAM Role que foi criado
+    Value: !Ref TurbonomicIAMRole
