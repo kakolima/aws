@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Description: Cria o stack que implelenta a IAM Role necessaria para gerenciar
-  recursos da AWS pelo Turbonomic. Este template cria acesso de leitura e escrita.
+  recursos da AWS pelo Turbonomic. Este template cria acesso leitura e escrita.
   Atualizado em 06-2023
 
 Metadata:
@@ -12,15 +12,24 @@ Metadata:
           default: Turbonomic
         Parameters:
           - TurboRoleName
+          - TurboAccountID
     ParameterLabels:
       TurboRoleName:
         default: Turbonomic IAM Role Name
+      TurboAccountID:
+        default: Turbonomic Account ID
+
 Parameters:
   TurboRoleName:
     Description: Nome do Turbonomic IAM Role que vai ser criado nas Accounts AWS. 
       Use somente caracteres alfanumericos e/ou +=,.@_-
     Type: String
     Default: 'Turbonomic_Cross_Account_Access'
+  TurboAccountID:
+    Description: Turbonomic Account ID Service Identifier
+    Type: String
+    Default: 'XXXXXXXXXXXXXXXXXX'
+
 Resources:
   TurbonomicIAMRole:
     Type: AWS::IAM::Role
@@ -31,52 +40,78 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: "arn:aws:iam:: <YOUR_ACCOUNT_NUMBER>:oidc-provider/rh-oidc.s3.us-east-1.amazonaws.com/ID-FORNECIDO-PELA-IBM"
+              Federated: "accounts.google.com"
             Action: "sts:AssumeRoleWithWebIdentity"
             Condition:
               StringEquals:
-                "rh-oidc.s3.us-east-1.amazonaws.com/ID-FORNECIDO-PELA-IBM:sub": "system:serviceaccount:<tenant_id>:<tenant_svc_account>"
+                "accounts.google.com:sub": [!Ref TurboAccountID]
   TurbonomicCrossAccountPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: TurbonomicRecommendedMinimumPolicy
+      PolicyName: TurbonomicReadAndWritePolicy
       PolicyDocument:
         Version: 2012-10-17
         Statement:
           - Action:
+              - autoscaling:CreateLaunchConfiguration
+              - autoscaling:DeleteLaunchConfiguration
               - autoscaling:DescribeAutoScalingGroups
+              - autoscaling:DescribeLaunchConfigurations
+              - autoscaling:ResumeProcesses
+              - autoscaling:SuspendProcesses
+              - autoscaling:UpdateAutoScalingGroup
+              - ce:GetReservationUtilization
+              - ce:GetSavingsPlansCoverage
+              - ce:GetSavingsPlansUtilization
+              - ce:GetSavingsPlansUtilizationDetails
               - cloudwatch:GetMetricData
               - cloudwatch:GetMetricStatistics
               - cloudwatch:ListMetrics
-              - ec2:DescribeSpotInstanceRequests
-              - ec2:DescribeAvailabilityZones
-              - ec2:DescribeInstances
-              - ec2:DescribeImages
-              - ec2:DescribeVolumes
-              - ec2:DescribeVolumeStatus
-              - ec2:DescribeVolumesModifications
+              - ec2:DeleteVolume
+              - ec2:DescribeAccountAttributes
               - ec2:DescribeAddresses
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeImages
+              - ec2:DescribeInstances
+              - ec2:DescribeInstanceStatus
               - ec2:DescribeRegions
               - ec2:DescribeReservedInstances
               - ec2:DescribeReservedInstancesModifications
+              - ec2:DescribeReservedInstancesOfferings
+              - ec2:DescribeSpotInstanceRequests
               - ec2:DescribeSpotPriceHistory
-              - ec2:DescribeAccountAttributes
-              - ec2:ListTagsForResource
+              - ec2:DescribeVolumes
+              - ec2:DescribeVolumesModifications
+              - ec2:DescribeVolumeStatus
+              - ec2:ModifyInstanceAttribute
+              - ec2:ModifyVolume
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - ec2:DescribeTags
+              - elasticloadbalancing:DescribeInstanceHealth
+              - elasticloadbalancing:DescribeLoadBalancers
               - elasticloadbalancing:DescribeTargetGroups
               - elasticloadbalancing:DescribeTargetHealth
-              - elasticloadbalancing:DescribeLoadBalancers
-              - elasticloadbalancing:DescribeInstanceHealth
+              - iam:PassRole
               - iam:GetUser
+              - KMS:CreateGrant
               - organizations:DescribeOrganization
               - organizations:ListAccounts
               - pi:GetResourceMetrics
-              - rds:DescribeDBInstances
               - rds:DescribeDBClusters
+              - rds:DescribeDBInstances
               - rds:DescribeDBParameters
-              - rds:ListTagsForResource
               - rds:DescribeOrderableDBInstanceOptions
-              - servicecatalog:SearchProducts
+              - rds:ListTagsForResource
+              - rds:ModifyDBInstance
+              - rds:StartDBInstance
+              - rds:StopDBInstance
               - savingsplans:DescribeSavingsPlans
+              - servicecatalog:DescribeProduct
+              - servicecatalog:DescribeRecord
+              - servicecatalog:ListLaunchPaths
+              - servicecatalog:ProvisionProduct
+              - servicecatalog:SearchProducts
             Effect: Allow
             Resource: '*'
       Roles: [!Ref TurbonomicIAMRole]
