@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Description: Cria o stack que implelenta a IAM Role necessaria para gerenciar
-  recursos da AWS pelo Turbonomic. Este template cria acesso SOMENTE LEITURA apenas.
-  Atualizado em 05-2023
+  recursos da AWS pelo Turbonomic. Este template cria acesso de leitura e escrita.
+  Atualizado em 06-2023
 
 Metadata:
   AWS::CloudFormation::Interface:
