@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::<YOUR_AWS_ACCOUNT_NUMBER>:oidc-provider/rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7:sub":"system:serviceaccount:<TENANT_ID>:<TENANT_SVC_ACCOUNT>"
+                }
+            }
+        }
+    ]
+}
