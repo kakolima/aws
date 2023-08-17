@@ -35,7 +35,7 @@ Resources:
             Action: "sts:AssumeRoleWithWebIdentity"
             Condition:
               StringEquals:
-                "rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7:sub":"system:serviceaccount:<tenant_id>:<tenant_svc_account>"
+                "rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7:sub": "system:serviceaccount:<tenant_id>:<tenant_svc_account>"
   TurbonomicCrossAccountPolicy:
     Type: AWS::IAM::Policy
     Properties:
