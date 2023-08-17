@@ -31,7 +31,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: "arn:aws:iam::<YOUR_ACCOUNT_NUMBER>:rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7"
+              Federated: "arn:aws:iam::AWS::AccountId:rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7"
             Action: "sts:AssumeRoleWithWebIdentity"
             Condition:
               StringEquals:
