@@ -1,0 +1,142 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cria um stack para implementacao da IAM Role necessaria para conectar o Turbonomic com permissoes Read Only.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: Turbonomic
+        Parameters:
+          - TurboRoleName
+          - TenantId
+          - TenantSvcAccount
+    ParameterLabels:
+      TurboRoleName:
+        default: Nome da IAM Role do Turbonomic
+      TenantId:
+        default: TenantId, entregue pela IBM
+      TenantSvcAccount:
+        default: TenantServiceAccount, entregue pela IBM.
+Parameters:
+  TurboRoleName:
+    Description: Nome da IAM Role do Turbonomic que sera criada em sua account da AWS. 
+      Use somente caracteres alfanumericos e/ou +=,.@_-
+    Type: String
+    Default: 'Turbonomic_Access'
+  TenantId:
+    Description: Nome do seu Tenant, entregue pela IBM.
+    Type: String
+    Default: 'coloque_seu_tenant_id'
+  TenantSvcAccount:
+    Description: Nome da sua Service Account, entregue pela IBM. 
+    Type: String
+    Default: 'coloque_seu_tenant_svc_account'
+Resources:
+  TurboOIDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties: 
+      ClientIdList: 
+        - sts.amazonaws.com
+      ThumbprintList: 
+        - 9e99a48a9960b14926bb7f3b02e22da2b0ab7280
+      Url: https://rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7
+  TurbonomicIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${TurboRoleName}
+      AssumeRolePolicyDocument: 
+        !Sub |
+          {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Federated": "${TurboOIDCProvider}"
+                    },
+                    "Action": "sts:AssumeRoleWithWebIdentity",
+                    "Condition": {
+                        "StringEquals": {
+                            "${TurboOIDCProvider}:sub": "system:serviceaccount:${TenantId}:${TenantSvcAccount}"
+                        }
+                    }
+                }
+            ]
+          }
+      Policies:  
+        - PolicyName: TurbonomicReadOnlyMinimumPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - autoscaling:CreateLaunchConfiguration
+                - autoscaling:DeleteLaunchConfiguration
+                - autoscaling:DescribeAutoScalingGroups
+                - autoscaling:DescribeLaunchConfigurations
+                - autoscaling:ResumeProcesses
+                - autoscaling:SuspendProcesses
+                - autoscaling:UpdateAutoScalingGroup
+                - ce:GetReservationUtilization
+                - ce:GetSavingsPlansCoverage
+                - ce:GetSavingsPlansUtilization
+                - ce:GetSavingsPlansUtilizationDetails
+                - cloudwatch:GetMetricData
+                - cloudwatch:GetMetricStatistics
+                - cloudwatch:ListMetrics
+                - ec2:DeleteVolume
+                - ec2:DescribeAccountAttributes
+                - ec2:DescribeAddresses
+                - ec2:DescribeAvailabilityZones
+                - ec2:DescribeImages
+                - ec2:DescribeInstances
+                - ec2:DescribeInstanceStatus
+                - ec2:DescribeRegions
+                - ec2:DescribeReservedInstances
+                - ec2:DescribeReservedInstancesModifications
+                - ec2:DescribeReservedInstancesOfferings
+                - ec2:DescribeSpotInstanceRequests
+                - ec2:DescribeSpotPriceHistory
+                - ec2:DescribeVolumes
+                - ec2:DescribeVolumesModifications
+                - ec2:DescribeVolumeStatus
+                - ec2:ModifyInstanceAttribute
+                - ec2:ModifyVolume
+                - ec2:StartInstances
+                - ec2:StopInstances
+                - ec2:DescribeTags
+                - elasticloadbalancing:DescribeInstanceHealth
+                - elasticloadbalancing:DescribeLoadBalancers
+                - elasticloadbalancing:DescribeTargetGroups
+                - elasticloadbalancing:DescribeTargetHealth
+                - iam:PassRole
+                - iam:GetUser
+                - KMS:CreateGrant
+                - organizations:DescribeOrganization
+                - organizations:ListAccounts
+                - pi:GetResourceMetrics
+                - rds:DescribeDBClusters
+                - rds:DescribeDBInstances
+                - rds:DescribeDBParameters
+                - rds:DescribeOrderableDBInstanceOptions
+                - rds:ListTagsForResource
+                - rds:ModifyDBInstance
+                - rds:StartDBInstance
+                - rds:StopDBInstance
+                - savingsplans:DescribeSavingsPlans
+                - servicecatalog:DescribeProduct
+                - servicecatalog:DescribeRecord
+                - servicecatalog:ListLaunchPaths
+                - servicecatalog:ProvisionProduct
+                - servicecatalog:SearchProducts
+                Effect: Allow
+                Resource: '*'
+Outputs:
+  OIDCProvider:
+    Description: The OIDC Provider
+    Value: !Ref TurboOIDCProvider
+  RoleArn:
+    Description: The ARN of the Turbonomic IAM role
+    Value: !GetAtt [TurbonomicIAMRole, Arn]
+  RoleName:
+    Description: The Name of the IAM role that was created
+    Value: !Ref TurbonomicIAMRole
