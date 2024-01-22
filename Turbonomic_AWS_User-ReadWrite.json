@@ -59,6 +59,7 @@
           "rds:ModifyDBInstance",
           "rds:StartDBInstance",
           "rds:StopDBInstance",
+          "rds:DescribeReservedDBInstances",
           "savingsplans:DescribeSavingsPlans",
           "servicecatalog:DescribeProduct",
           "servicecatalog:DescribeRecord",
