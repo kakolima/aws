@@ -119,6 +119,7 @@ Resources:
                 - rds:DescribeDBInstances
                 - rds:DescribeDBParameters
                 - rds:DescribeOrderableDBInstanceOptions
+                - rds:DescribeReservedDBInstances
                 - rds:ListTagsForResource
                 - rds:ModifyDBInstance
                 - rds:StartDBInstance
