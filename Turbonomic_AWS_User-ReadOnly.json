@@ -36,6 +36,7 @@
           "rds:DescribeDBClusters",
           "rds:DescribeDBParameters",
           "rds:ListTagsForResource",
+          "rds:DescribeReservedDBInstances",
           "rds:DescribeOrderableDBInstanceOptions",
           "servicecatalog:SearchProducts",
           "savingsplans:DescribeSavingsPlans"
