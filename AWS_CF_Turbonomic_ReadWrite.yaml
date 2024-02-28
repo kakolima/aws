@@ -76,6 +76,8 @@ Resources:
                 - autoscaling:ResumeProcesses
                 - autoscaling:SuspendProcesses
                 - autoscaling:UpdateAutoScalingGroup
+                - autoscaling:SetDesiredCapacity
+                - autoscaling:TerminateInstanceInAutoScalingGroup
                 - ce:GetReservationUtilization
                 - ce:GetSavingsPlansCoverage
                 - ce:GetSavingsPlansUtilization
@@ -83,13 +85,14 @@ Resources:
                 - cloudwatch:GetMetricData
                 - cloudwatch:GetMetricStatistics
                 - cloudwatch:ListMetrics
-                - ec2:DeleteVolume
+                - cloudtrail:LookupEvents
                 - ec2:DescribeAccountAttributes
                 - ec2:DescribeAddresses
                 - ec2:DescribeAvailabilityZones
                 - ec2:DescribeImages
                 - ec2:DescribeInstances
                 - ec2:DescribeInstanceTypes
+                - ec2:DescribeInstanceTypeOfferings
                 - ec2:DescribeInstanceStatus
                 - ec2:DescribeRegions
                 - ec2:DescribeReservedInstances
@@ -104,6 +107,7 @@ Resources:
                 - ec2:ModifyVolume
                 - ec2:StartInstances
                 - ec2:StopInstances
+                - ec2:DeleteVolume
                 - ec2:DescribeTags
                 - elasticloadbalancing:DescribeInstanceHealth
                 - elasticloadbalancing:DescribeLoadBalancers
