@@ -83,6 +83,7 @@ Resources:
                   - ec2:DescribeInstanceTypes
                   - ec2:DescribeRegions
                   - ec2:DescribeReservedInstances
+                  - ec2:DescribeInstanceTypeOfferings
                   - ec2:DescribeReservedInstancesModifications
                   - ec2:DescribeSpotInstanceRequests
                   - ec2:DescribeSpotPriceHistory
