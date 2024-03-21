@@ -119,6 +119,7 @@ Resources:
                 - organizations:DescribeOrganization
                 - organizations:ListAccounts
                 - pi:GetResourceMetrics
+                - pi:ListAvailableResourceMetrics
                 - rds:DescribeDBClusters
                 - rds:DescribeDBInstances
                 - rds:DescribeDBParameters
