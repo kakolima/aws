@@ -29,6 +29,7 @@
             "organizations:DescribeOrganization",
             "organizations:ListAccounts",
             "pi:GetResourceMetrics",
+            "pi:ListAvailableResourceMetrics",
             "rds:DescribeDBInstances",
             "rds:DescribeDBClusters",
             "rds:DescribeDBParameters",
