@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Cria um stack para implementacao da IAM Role necessaria para conectar o Turbonomic com permissoes Read Only.
+Description: Cria um stack para implementacao da IAM Role necessaria para conectar o Turbonomic com permissoes de execucao.
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
