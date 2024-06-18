@@ -109,6 +109,7 @@ Resources:
                   - rds:ListTagsForResource
                   - servicecatalog:SearchProducts
                   - savingsplans:DescribeSavingsPlans
+                  - savingsplans:DescribeSavingsPlansOfferingRates
                   - ce:GetSavingsPlansUtilization
                   - ce:GetSavingsPlansUtilizationDetails
                   - pricing:DescribeServices
