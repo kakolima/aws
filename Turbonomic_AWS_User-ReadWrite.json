@@ -5,6 +5,7 @@
             "Effect": "Allow",
             "Action": [
                 "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeTags",
                 "cloudtrail:LookupEvents",
                 "cloudwatch:GetMetricData",
                 "cloudwatch:GetMetricStatistics",
@@ -34,7 +35,9 @@
                 "rds:DescribeDBParameters",
                 "rds:ListTagsForResource",
                 "rds:DescribeOrderableDBInstanceOptions",
+                "rds:DescribeReservedDBInstances",
                 "savingsplans:DescribeSavingsPlans",
+                "savingsplans:DescribeSavingsPlansOfferingRates",
                 "autoscaling:SuspendProcesses",
                 "autoscaling:ResumeProcesses",
                 "autoscaling:DescribeLaunchConfigurations",
