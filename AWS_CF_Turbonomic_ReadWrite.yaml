@@ -130,6 +130,7 @@ Resources:
                 - rds:StartDBInstance
                 - rds:StopDBInstance
                 - savingsplans:DescribeSavingsPlans
+                - savingsplans:DescribeSavingsPlansOfferingRates
                 - servicecatalog:DescribeProduct
                 - servicecatalog:DescribeRecord
                 - servicecatalog:ListLaunchPaths
