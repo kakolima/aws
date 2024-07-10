@@ -92,6 +92,7 @@ Resources:
                 - pricing:DescribeServices
                 - pricing:GetAttributeValues
                 - savingsplans:DescribeSavingsPlans
+                - savingsplans:DescribeSavingsPlansOfferingRates
                 Effect: Allow
                 Resource: '*'
               - Action:
