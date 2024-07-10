@@ -5,10 +5,12 @@
             "Effect": "Allow",
             "Action": [
                 "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeTags",
                 "cloudtrail:LookupEvents",
                 "cloudwatch:GetMetricData",
                 "cloudwatch:GetMetricStatistics",
                 "cloudwatch:ListMetrics",
+                "cloudwatch:ListTagsForResource",
                 "ec2:DescribeSpotInstanceRequests",
                 "ec2:DescribeAvailabilityZones",
                 "ec2:DescribeInstances",
@@ -24,6 +26,7 @@
                 "ec2:DescribeSpotPriceHistory",
                 "ec2:DescribeAccountAttributes",
                 "ec2:DescribeTags",
+                "ec2:DescribeInstanceTypes",
                 "iam:GetUser",
                 "organizations:DescribeOrganization",
                 "organizations:ListAccounts",
@@ -34,7 +37,9 @@
                 "rds:DescribeDBParameters",
                 "rds:ListTagsForResource",
                 "rds:DescribeOrderableDBInstanceOptions",
-                "savingsplans:DescribeSavingsPlans"
+                "rds:DescribeReservedDBInstances",
+                "savingsplans:DescribeSavingsPlans",
+                "savingsplans:DescribeSavingsPlansOfferingRates"
             ],
             "Resource": "*"
         }
