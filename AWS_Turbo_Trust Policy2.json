@@ -3,12 +3,12 @@
     "Statement": [{
             "Effect": "Allow",
             "Principal": {
-                "Federated": "arn:aws:iam::<YOUR_AWS_ACCOUNT_NUMBER>:oidc-provider/https://rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7"
+                "Federated": "arn:aws:iam::<YOUR_AWS_ACCOUNT_NUMBER>:oidc-provider/https://oidc.op1.openshiftapps.com/2f785sojlpb85i7402pk3qogugim5nfb"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
                 "StringEquals": {
-                    "rh-oidc.s3.us-east-1.amazonaws.com/22ejnvnnturfmt6km08idd0nt4hekbn7:sub":"system:serviceaccount:<TENANT_ID>:<TENANT_SVC_ACCOUNT>"
+                    "oidc.op1.openshiftapps.com/2f785sojlpb85i7402pk3qogugim5nfb:sub":"system:serviceaccount:<TENANT_ID>:<TENANT_SVC_ACCOUNT>"
                 }
             }
         }
