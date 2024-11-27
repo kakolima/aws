@@ -94,6 +94,7 @@ Resources:
                 - ec2:DescribeInstanceTypes
                 - ec2:DescribeInstanceTypeOfferings
                 - ec2:DescribeInstanceStatus
+                - ec2:DescribeLaunchTemplateVersions
                 - ec2:DescribeRegions
                 - ec2:DescribeReservedInstances
                 - ec2:DescribeReservedInstancesModifications
@@ -118,6 +119,7 @@ Resources:
                 - KMS:CreateGrant
                 - organizations:DescribeOrganization
                 - organizations:ListAccounts
+                - organizations:ListTagsForResource
                 - pi:GetResourceMetrics
                 - pi:ListAvailableResourceMetrics
                 - rds:DescribeDBClusters
