@@ -71,10 +71,12 @@ Resources:
               - Action:
                   - autoscaling:DescribeAutoScalingGroups
                   - autoscaling:DescribeTags
+                  - autoscaling:DescribeLaunchConfigurations
                   - cloudwatch:GetMetricData
                   - cloudwatch:GetMetricStatistics
                   - cloudwatch:ListMetrics
                   - cloudwatch:ListTagsForResource
+                  - cloudtrail:LookupEvents
                   - ec2:DescribeAccountAttributes
                   - ec2:DescribeAddresses
                   - ec2:DescribeAvailabilityZones
@@ -84,6 +86,7 @@ Resources:
                   - ec2:DescribeRegions
                   - ec2:DescribeReservedInstances
                   - ec2:DescribeInstanceTypeOfferings
+                  - ec2:DescribeLaunchTemplateVersions
                   - ec2:DescribeReservedInstancesModifications
                   - ec2:DescribeSpotInstanceRequests
                   - ec2:DescribeSpotPriceHistory
@@ -99,6 +102,7 @@ Resources:
                   - iam:GetUser
                   - organizations:DescribeOrganization
                   - organizations:ListAccounts
+                  - organizations:ListTagsForResource
                   - pi:GetResourceMetrics
                   - pi:ListAvailableResourceMetrics
                   - rds:DescribeDBClusters
