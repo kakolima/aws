@@ -13,6 +13,7 @@
             "iam:GetUser",
             "organizations:DescribeOrganization",
             "organizations:ListAccounts",
+            "organizations:ListTagsForResource",
             "pi:GetResourceMetrics",
             "pi:ListAvailableResourceMetrics",
             "ce:GetReservationUtilization",
