@@ -1,0 +1,166 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Creates the stack to implement the IAM Role required to connect
+    Turbonomic with Optimize Permissions through OIDC Provider.
+
+Metadata:
+    AWS::CloudFormation::Interface:
+        ParameterGroups:
+            - Label:
+                  default: Turbonomic
+              Parameters:
+                  - TurboRoleName
+                  - TurboOIDCProviderURL
+                  - TenantId
+                  - TenantSvcAccount
+        ParameterLabels:
+            TurboRoleName:
+                default: Turbonomic IAM Role Name
+            TurboOIDCProviderURL:
+                default: OIDC Provider URL, provided by Turbonomic
+            TenantId:
+                default: TenantId, provided by Turbonomic
+            TenantSvcAccount:
+                default: TenantServiceAccount, provided by Turbonomic
+
+Parameters:
+    TurboRoleName:
+        Description: Name of the Turbonomic IAM Role to create within your AWS accounts.
+            Use only alphanumeric characters and/or the following +=,.@_-
+        Type: String
+        Default: 'Turbonomic_Org_Access_Execute'
+    TurboOIDCProviderURL:
+        Description: OIDC Provider URL, provided by Turbonomic
+        Type: String
+        Default: 'turboOIDCProviderURL'
+    TenantId:
+        Description: Name of your Tenant, provided by Turbonomic
+        Type: String
+        Default: 'tenantId'
+    TenantSvcAccount:
+        Description: Name of your Service Account, provided by Turbonomic.
+        Type: String
+        Default: 'tenantId-sa'
+
+Resources:
+    TurboOIDCProvider:
+        Type: AWS::IAM::OIDCProvider
+        Properties:
+            ClientIdList:
+                - sts.amazonaws.com
+            ThumbprintList:
+                - 9e99a48a9960b14926bb7f3b02e22da2b0ab7280
+            Url: !Ref TurboOIDCProviderURL
+    TurbonomicIAMRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: !Sub ${TurboRoleName}
+            AssumeRolePolicyDocument: !Sub
+                - |
+                    {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                          {
+                              "Effect": "Allow",
+                              "Principal": {
+                                  "Federated": "${IamOidcProviderArn}"
+                              },
+                              "Action": "sts:AssumeRoleWithWebIdentity",
+                              "Condition": {
+                                  "StringEquals": {
+                                      "${TurboOidcProviderEndpoint}:sub": "system:serviceaccount:${TenantId}:${TenantSvcAccount}"
+                                  }
+                              }
+                          }
+                      ]
+                    }
+                - IamOidcProviderArn: !Ref TurboOIDCProvider
+                  TurboOidcProviderEndpoint:
+                      !Select [1, !Split ['provider/', !Ref TurboOIDCProvider]]
+                  TenantId: !Ref TenantId
+                  TenantSvcAccount: !Ref TenantSvcAccount
+            Policies:
+                - PolicyName: TurbonomicOptimizeMinimumPolicy
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Action:
+                                - autoscaling:DescribeAutoScalingGroups
+                                - autoscaling:DescribeTags
+                                - cloudtrail:LookupEvents
+                                - cloudwatch:GetMetricData
+                                - cloudwatch:GetMetricStatistics
+                                - cloudwatch:ListMetrics
+                                - cloudwatch:ListTagsForResource
+                                - ec2:DescribeAccountAttributes
+                                - ec2:DescribeAddresses
+                                - ec2:DescribeAvailabilityZones
+                                - ec2:DescribeImages
+                                - ec2:DescribeInstanceTypeOfferings
+                                - ec2:DescribeInstances
+                                - ec2:DescribeInstanceTypes
+                                - ec2:DescribeRegions
+                                - ec2:DescribeReservedInstances
+                                - ec2:DescribeReservedInstancesModifications
+                                - ec2:DescribeSpotInstanceRequests
+                                - ec2:DescribeSpotPriceHistory
+                                - ec2:DescribeTags
+                                - ec2:DescribeVolumes
+                                - ec2:DescribeVolumeStatus
+                                - ec2:DescribeVolumesModifications
+                                - iam:GetUser
+                                - organizations:DescribeOrganization
+                                - organizations:ListAccounts
+                                - organizations:ListTagsForResource
+                                - pi:GetResourceMetrics
+                                - pi:ListAvailableResourceMetrics
+                                - rds:DescribeDBClusters
+                                - rds:DescribeDBInstances
+                                - rds:DescribeDBParameters
+                                - rds:DescribeOrderableDBInstanceOptions
+                                - rds:DescribeReservedDBInstances
+                                - rds:ListTagsForResource
+                                - savingsplans:DescribeSavingsPlans
+                                - savingsplans:DescribeSavingsPlansOfferingRates
+                                - autoscaling:CreateLaunchConfiguration
+                                - autoscaling:DeleteLaunchConfiguration
+                                - autoscaling:DescribeLaunchConfigurations
+                                - autoscaling:ResumeProcesses
+                                - autoscaling:SetDesiredCapacity
+                                - autoscaling:SuspendProcesses
+                                - autoscaling:TerminateInstanceInAutoScalingGroup
+                                - autoscaling:UpdateAutoScalingGroup
+                                - ec2:CreateLaunchTemplateVersion
+                                - ec2:DeleteVolume
+                                - ec2:DescribeInstanceStatus
+                                - ec2:DescribeLaunchTemplateVersions
+                                - ec2:ModifyInstanceAttribute
+                                - ec2:ModifyLaunchTemplate
+                                - ec2:ModifyVolume
+                                - ec2:StartInstances
+                                - ec2:StopInstances
+                                - iam:PassRole
+                                - KMS:CreateGrant
+                                - rds:ModifyDBInstance
+                                - rds:StartDBInstance
+                                - rds:StopDBInstance
+                                - redshift:DescribeClusters
+                                - redshift:DescribeTags
+                                - redshift:PauseCluster
+                                - servicecatalog:DescribeProduct
+                                - servicecatalog:DescribeRecord
+                                - servicecatalog:ListLaunchPaths
+                                - servicecatalog:ProvisionProduct
+                            Effect: Allow
+                            Resource: '*'
+
+Outputs:
+    OIDCProvider:
+        Description: The OIDC Provider
+        Value: !Ref TurboOIDCProvider
+    RoleArn:
+        Description: The ARN of the Turbonomic IAM role
+        Value: !GetAtt [TurbonomicIAMRole, Arn]
+    RoleName:
+        Description: The Name of the IAM role that was created
+        Value: !Ref TurbonomicIAMRole
