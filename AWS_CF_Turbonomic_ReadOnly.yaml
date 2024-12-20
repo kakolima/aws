@@ -111,6 +111,8 @@ Resources:
                   - rds:DescribeOrderableDBInstanceOptions
                   - rds:DescribeReservedDBInstances
                   - rds:ListTagsForResource
+                  - redshift:DescribeClusters
+                  - redshift:DescribeTags
                   - servicecatalog:SearchProducts
                   - savingsplans:DescribeSavingsPlans
                   - savingsplans:DescribeSavingsPlansOfferingRates
