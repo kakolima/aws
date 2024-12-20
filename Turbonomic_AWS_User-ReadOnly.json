@@ -38,6 +38,8 @@
                 "rds:ListTagsForResource",
                 "rds:DescribeOrderableDBInstanceOptions",
                 "rds:DescribeReservedDBInstances",
+                "redshift:DescribeClusters",
+                "redshift:DescribeTags",
                 "savingsplans:DescribeSavingsPlans",
                 "savingsplans:DescribeSavingsPlansOfferingRates"
             ],
