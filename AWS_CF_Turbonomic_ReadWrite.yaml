@@ -131,6 +131,9 @@ Resources:
                 - rds:ModifyDBInstance
                 - rds:StartDBInstance
                 - rds:StopDBInstance
+                - redshift:DescribeClusters
+                - redshift:DescribeTags
+                - redshift:PauseCluster
                 - savingsplans:DescribeSavingsPlans
                 - savingsplans:DescribeSavingsPlansOfferingRates
                 - servicecatalog:DescribeProduct
