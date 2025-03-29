@@ -52,7 +52,7 @@ Resources:
         - sts.amazonaws.com
       ThumbprintList: 
         - 06b25927c42a721631c1efd9431e648fa62e1e39
-      Url: https://oidc.op1.openshiftapps.com/2f785sojlpb85i7402pk3qogugim5nfb
+      Url: https://oidc.op1.openshiftapps.com/2c51blsaqa9gkjt0o9rt11mle8mmropu
   TurbonomicIAMRole:
     Type: AWS::IAM::Role
     Properties:
@@ -70,7 +70,7 @@ Resources:
                     "Action": "sts:AssumeRoleWithWebIdentity",
                     "Condition": {
                         "StringEquals": {
-                            "oidc.op1.openshiftapps.com/2f785sojlpb85i7402pk3qogugim5nfb:sub": "system:serviceaccount:${TenantId}:${TenantSvcAccount}"
+                            "oidc.op1.openshiftapps.com/2c51blsaqa9gkjt0o9rt11mle8mmropu:sub": "system:serviceaccount:${TenantId}:${TenantSvcAccount}"
                         }
                     }
                 }
